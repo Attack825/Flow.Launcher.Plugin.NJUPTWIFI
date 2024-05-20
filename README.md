@@ -1,3 +1,3 @@
 # Flow.Launcher.Plugin.NJUPTWIFI
 
-用于南京邮电大学的flow launcher插件
+Flow launcher plugin for WiFi login in njupt

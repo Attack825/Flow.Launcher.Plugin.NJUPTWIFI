@@ -1,0 +1,12 @@
+{
+    "ID": "f5d22dcf-cbf8-4f35-9959-a6a1777baead",
+    "ActionKeyword": "wifi",
+    "Name": "Flow.Launcher.Plugin.NJUPTWIFI",
+    "Description": "Flow launcher plugin for WiFi login in njupt",
+    "Author": "Attack825",
+    "Version": "0.0.1",
+    "Language": "python",
+    "Website": "https://github.com/Attack825/Flow.Launcher.Plugin.NJUPTWIFI",
+    "IcoPath": "Images\\app.png",
+    "ExecuteFileName": "main.py"
+}
