@@ -40,8 +40,8 @@ def login():
 
     response = requests.get(url, params=params, headers=headers)
 
-    print(response.status_code)
-    print(response.text)  # 如果需要查看返回的内容
+    # print(response.status_code)
+    # print(response.text)  # 如果需要查看返回的内容
 
 
 def logout():
@@ -79,20 +79,8 @@ def logout():
 
     response = requests.get(url, params=params, headers=headers)
 
-    print(response.status_code)
-    print(response.text)  # 如果需要查看返回的内容
-
-
-def debug_json_rpc(str):
-    return [{
-        "Title": "title",
-        "SubTitle": str,
-        "IcoPath": "image/app.png",
-        # "jsonRPCAction": {
-        #     "method": "cmd_command",
-        #     "parameters": [self.cmd]
-        # }
-    }]
+    # print(response.status_code)
+    # print(response.text)  # 如果需要查看返回的内容
 
 
 class MessageDTO:
@@ -102,7 +90,8 @@ class MessageDTO:
         self.image = operation["Image"]
         # todo:无法获得flow launcher客户端的配置设置，只能被调用
         # 无法从配置中获取账号密码,先将就用着吧
-        self.cmd = operation["cmd"]
+        self.funcname = operation["FuncName"]
+        self.parameters = operation["Parameters"]
 
     def asFlowMessage(self) -> dict:
         return {
@@ -110,8 +99,8 @@ class MessageDTO:
             "SubTitle": self.subtitle,
             "IcoPath": self.image,
             "jsonRPCAction": {
-                "method": "cmd_command",  # 自定义插件的方法
-                "parameters": [self.cmd]  # 自定义插件类的参数
+                "method": self.funcname,  # 自定义插件的方法
+                "parameters": [self.parameters]  # 自定义插件类的参数
             }
         }
 
@@ -129,22 +118,48 @@ class HelloWorld(FlowLauncher):
                 "Title": "login",
                 "SubTitle": "login",
                 "Image": "images/app.png",
-                "cmd": "login"
+                "FuncName": "cmd_command",
+                "Parameters": "login"
             },
             {
                 "Title": "logout",
                 "SubTitle": "logout",
-                "IcoPath": "image/app.png",
                 "Image": "images/app.png",
-                "cmd": "logout"
+                "FuncName": "cmd_command",
+                "Parameters": "logout"
+            },
+            {
+                "Title": "is_online",
+                "SubTitle": "is_online",
+                "Image": "images/app.png",
+                "FuncName": "open_url",
+                "Parameters": "https://p.njupt.edu.cn:802/eportal/portal/online_list?callback=dr1002&user_account=&user_password=&wlan_user_mac=000000000000&wlan_user_ip=176726222&curr_user_ip=176726222&jsVersion=4.X&v=4182&lang=zh"
             }
         ]
         for operation in operation_list:
             self.addMessage(MessageDTO(operation))
+
         return self.messages
 
     def open_url(self, url):
         webbrowser.open(url)
+
+    def context_menu(self, data):
+        """ 
+        用于点击->后，显示的菜单选项
+        """
+        pass
+        # return [
+        #     {
+        #         "Title": "Hello World Python's Context menu",
+        #         "SubTitle": "Press enter to open Flow the plugin's repo in GitHub",
+        #         "IcoPath": "Images/app.png",
+        #         "JsonRPCAction": {
+        #             "method": "open_url",
+        #             "parameters": ["https://github.com/Flow-Launcher/Flow.Launcher.Plugin.HelloWorldPython"]
+        #         }
+        #     }
+        # ]
 
     def cmd_command(self, command):
         if command == "login":

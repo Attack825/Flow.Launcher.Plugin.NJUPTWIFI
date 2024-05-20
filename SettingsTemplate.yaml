@@ -1,9 +1,11 @@
-# body:
-#   - type: input
-#     attributes:
-#       name: vscode_path
-#       label: File location of vscode
-#       description: Please enter the location of vscode
-#       defaultValue: D:\VSCode\bin\code
-
-# 账号密码输入框
+body:
+  - type: input
+    attributes:
+      name: account
+      label: WiFi account
+      defaultValue: B21090519
+  - type: passwordBox
+    attributes:
+      name: password
+      label: Password input
+      defaultValue: '123456'
