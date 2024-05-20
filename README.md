@@ -1,3 +1,21 @@
 # Flow.Launcher.Plugin.NJUPTWIFI
 
-Flow launcher plugin for WiFi login in njupt
+这个插件允许在南京邮电大学轻松使用 Flow Launcher 登录 WiFi。
+
+## 使用方法
+
+1. 在 Flow Launcher 设置中输入你的账号和密码。
+2. 按下 Alt+空格，然后输入 "wifi" 来提示登录、注销或检查在线状态。按 Enter 完成 WiFi 的登录或注销操作以及查看是否在线操作。
+
+## 版本信息
+
+当前版本：0.01
+默认为电信账号
+
+## 待办事项
+
+1. 支持学校账号、电信账号和移动账号。
+2. 提供登录失败的警告。
+3. 提示用户在设置中添加账号和密码。
+4. 添加测试功能。
+5. 实现打包功能，避免客户端需要安装 Python。
