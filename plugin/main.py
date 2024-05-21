@@ -1,10 +1,11 @@
+import os
+import sys
+import json
+import socket
 import requests
 import webbrowser
-from flowlauncher import FlowLauncher
-import sys
-import os
 import urllib.parse
-import json
+from flowlauncher import FlowLauncher
 from typing import Any, Mapping, Dict
 
 if sys.version_info < (3, 11):
@@ -40,6 +41,26 @@ class JsonRPCClient:
 def settings() -> Dict[str, Any]:
     """Retrieve the settings from Flow Launcher."""
     return JsonRPCClient().recieve().get('settings', {})
+
+# 它还适用于所有公共、私有、外部 IP。这种方法在 Linux、Windows 和 OSX 上很有效。
+
+
+def extract_ip():
+    url = 'https://p.njupt.edu.cn'
+    headers = {
+        'Accept': '*/*',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0'
+    }
+    response = requests.get(url, headers=headers)
+    st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        st.connect(('10.255.255.255', 1))
+        IP = st.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        st.close()
+    return IP
 
 
 def debug_str(str):
@@ -109,21 +130,21 @@ class HelloWorld(FlowLauncher):
                 "SubTitle": "is_online",
                 "Image": "images/app.png",
                 "FuncName": "is_online",
-                "Parameters": ["https://p.njupt.edu.cn:802/eportal/portal/online_list?callback=dr1002&user_account=&user_password=&wlan_user_mac=000000000000&wlan_user_ip=176726222&curr_user_ip=176726222&jsVersion=4.X&v=4182&lang=zh"]
-            }
+                "Parameters": ["https://p.njupt.edu.cn:802/eportal/portal/online_list?callback=dr1002"]}
         ]
 
         for operation in operation_list:
             self.addMessage(MessageDTO(operation))
 
         return self.messages
-        # return debug_str(password)
+        # local_network_ip = extract_ip()
+        # return debug_str(local_network_ip)
 
     def open_url(self, url):
         webbrowser.open(url)
 
     def context_menu(self, data):
-        """ 
+        """
         用于点击->后，显示的菜单选项
         """
         pass
@@ -142,7 +163,7 @@ class HelloWorld(FlowLauncher):
     def login(self, account: str, password: str):
         account = account
         password = password
-
+        local_network_ip = extract_ip()
         url = 'https://p.njupt.edu.cn:802/eportal/portal/login'
         params = {
             'callback': 'dr1003',
@@ -150,7 +171,7 @@ class HelloWorld(FlowLauncher):
             # 'user_account': ',0,B21090519@njxy',
             'user_account': account,
             'user_password': password,
-            'wlan_user_ip': '10.136.160.206',
+            'wlan_user_ip': local_network_ip,
             'wlan_user_ipv6': '',
             'wlan_user_mac': '000000000000',
             'wlan_ac_ip': '',
@@ -174,6 +195,7 @@ class HelloWorld(FlowLauncher):
 
     def logout(self):
         url = 'https://p.njupt.edu.cn:802/eportal/portal/logout'
+        local_network_ip = extract_ip()
         params = {
             'callback': 'dr1003',
             'login_method': '1',
@@ -181,7 +203,7 @@ class HelloWorld(FlowLauncher):
             'user_password': '123',
             'ac_logout': '1',
             'register_mode': '1',
-            'wlan_user_ip': '10.136.160.206',
+            'wlan_user_ip': local_network_ip,
             'wlan_user_ipv6': '',
             'wlan_vlan_id': '0',
             'wlan_user_mac': '000000000000',
