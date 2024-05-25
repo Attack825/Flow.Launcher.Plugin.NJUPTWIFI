@@ -13,13 +13,6 @@ import requests
 
 # 它还适用于所有公共、私有、外部 IP。这种方法在 Linux、Windows 和 OSX 上很有效。
 def extract_ip():
-    url = 'https://p.njupt.edu.cn'
-    headers = {
-        'Accept': '*/*',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0'
-    }
-    response = requests.get(url, headers=headers)
-    # print(response.text)
     st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         st.connect(('10.255.255.255', 1))
